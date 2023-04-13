@@ -28,6 +28,6 @@
     private void OnMenuSpeechToNumberClicked() => NavigateToMode(ModeSpeechToNumber);
 
 
-    private void NavigateBackToMenu() => NavigationManager.NavigateTo($"/normal-numbers");
-    private void NavigateToMode(string mode) => NavigationManager.NavigateTo($"/normal-numbers/{mode}");
+    private void NavigateBackToMenu() => NavigationManager.NavigateTo($"normal-numbers");
+    private void NavigateToMode(string mode) => NavigationManager.NavigateTo($"normal-numbers/{mode}");
 }
