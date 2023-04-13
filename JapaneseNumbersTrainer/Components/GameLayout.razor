@@ -1,0 +1,15 @@
+﻿
+<div class="container h-100">
+    <div class="d-flex flex-column h-100 align-items-center justify-content-center">
+        @Body
+    </div>
+
+    <footer class="fixed-bottom">
+        @Footer
+    </footer>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? Body { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
+}

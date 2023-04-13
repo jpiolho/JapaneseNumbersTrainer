@@ -1,0 +1,74 @@
+﻿@page "/normal-numbers/number-to-japanese"
+@inject NavigationManager NavigationManager
+@inject JapaneseService JapaneseService
+@layout EmptyLayout
+
+<KeyPressListener OnKeyPressed="OnKeyPressed" />
+
+<GameLayout>
+    <Body>
+        <h1>@Number</h1>
+        <Hiddeable Visible="_showRomanji">
+            <h3>@_romanji</h3>
+        </Hiddeable>
+    </Body>
+
+    <Footer>
+        <ButtonActionList>
+            <ButtonSecondary Text="Back" />
+        </ButtonActionList>
+    </Footer>
+</GameLayout>
+
+
+@code {
+    [Parameter, SupplyParameterFromQuery] public int? Number { get; set; }
+
+
+    private string? _romanji;
+    private bool _showRomanji;
+
+    protected override void OnInitialized()
+    {
+        if(Number is null)
+        {
+            NavigateToRandomNumber();
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if(Number is not null)
+            _romanji = JapaneseService.ConvertToJapaneseRomaji(Number.Value);
+    }
+
+
+    private void OnKeyPressed(string key)
+    {
+        if (key == " ")
+        {
+            if(!_showRomanji)
+            {
+                _showRomanji = true;
+            }
+            else
+            {
+                _showRomanji = false;
+                NavigateToRandomNumber();
+            }
+        }
+    }
+
+    private void NavigateToRandomNumber()
+    {
+        int number;
+
+        do
+        {
+            number = Random.Shared.Next(0, 100);
+        }
+        while (number == Number);
+
+        NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath + $"?{nameof(Number)}={number}", forceLoad: false);
+    }
+}

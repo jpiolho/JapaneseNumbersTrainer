@@ -1,0 +1,8 @@
+﻿<div style="@(!Visible ? "visibility:hidden" : "")">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

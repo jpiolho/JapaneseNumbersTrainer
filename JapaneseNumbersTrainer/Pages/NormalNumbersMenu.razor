@@ -1,0 +1,33 @@
+﻿@page "/normal-numbers"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Normal Numbers</PageTitle>
+
+<div class="row">
+    <div class="col d-flex flex-column align-items-center">
+        <h1>Normal Numbers</h1>
+        <h3>Choose a exercise type</h3>
+
+        <ButtonActionList>
+            <ButtonPrimary Text="Number to Japanese" Click="OnMenuNumberToJapaneseClicked" />
+            <ButtonPrimary Text="Text to number" Click="OnMenuTextToNumberClicked" />
+            <ButtonPrimary Text="Speech to number" Click="OnMenuSpeechToNumberClicked" />
+            <ButtonSecondary Text="Back" Click="OnMenuBackClicked" />
+        </ButtonActionList>
+    </div>
+</div>
+
+@code {
+    const string ModeNumberToJapanese = "number-to-japanese";
+    const string ModeTextToNumber = "text-to-number";
+    const string ModeSpeechToNumber = "speech-to-number";
+
+    private void OnMenuBackClicked() => NavigationManager.NavigateTo("/");
+    private void OnMenuNumberToJapaneseClicked() => NavigateToMode(ModeNumberToJapanese);
+    private void OnMenuTextToNumberClicked() => NavigateToMode(ModeTextToNumber);
+    private void OnMenuSpeechToNumberClicked() => NavigateToMode(ModeSpeechToNumber);
+
+
+    private void NavigateBackToMenu() => NavigationManager.NavigateTo($"/normal-numbers");
+    private void NavigateToMode(string mode) => NavigationManager.NavigateTo($"/normal-numbers/{mode}");
+}
