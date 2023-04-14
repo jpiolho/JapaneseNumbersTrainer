@@ -69,6 +69,6 @@
         }
         while (number == Number);
 
-        NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath + $"?{nameof(Number)}={number}", forceLoad: false);
+        NavigationManager.NavigateTo($"normal-numbers/number-to-japanese?{nameof(Number)}={number}", forceLoad: false);
     }
 }
