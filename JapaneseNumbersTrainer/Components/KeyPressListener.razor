@@ -12,7 +12,7 @@
     {
         if(firstRender)
         {
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/KeyPressListener.razor.js");
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/Components/KeyPressListener.razor.js");
             _selfReference = DotNetObjectReference.Create(this);
             await _module.InvokeVoidAsync("registerEvent", _selfReference);
         }
