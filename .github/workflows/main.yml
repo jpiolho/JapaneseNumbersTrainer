@@ -40,10 +40,14 @@ jobs:
         working-directory: ./JapaneseNumbersTrainer
         run: dotnet publish JapaneseNumbersTrainer.csproj -c Release -o release --nologo
       
-      # Add base for github pages
       - name: Add base href to index.html
         working-directory: ./JapaneseNumbersTrainer/release/wwwroot
-        run: sed -i 's/<head>/<head>\n<base href="\/JapaneseNumbersTrainer\/" \/>/' index.html
+        run: |
+          echo "Contents of index.html before modification:"
+          cat index.html
+          sed -i 's/<head>/<head>\n<base href="\/JapaneseNumbersTrainer\/" \/>/' index.html
+          echo "Contents of index.html after modification:"
+          cat index.html
       
       # build the pages artifact
       - name: Upload Pages Artifact
