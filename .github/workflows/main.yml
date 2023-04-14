@@ -35,15 +35,16 @@ jobs:
         with:
           dotnet-version: 7.0.*
       
+      - name: Change base href in index.html
+        working-directory: ./JapaneseNumbersTrainer/wwwroot
+        run: |
+          sed -i 's|<base href="/" />|<base href="/JapaneseNumbersTrainer/" />|' index.html
+      
       # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
         working-directory: ./JapaneseNumbersTrainer
         run: dotnet publish JapaneseNumbersTrainer.csproj -c Release -o release --nologo
       
-      - name: Add base href to index.html
-        working-directory: ./JapaneseNumbersTrainer/release/wwwroot
-        run: |
-          sed -i 's/<head>/<head>\n     <base href="\/JapaneseNumbersTrainer\/" \/>/' index.html
           
       # build the pages artifact
       - name: Upload Pages Artifact
