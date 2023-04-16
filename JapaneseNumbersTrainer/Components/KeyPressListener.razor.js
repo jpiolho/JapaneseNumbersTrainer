@@ -11,5 +11,5 @@ export function unregisterEvent() {
 
 
 function callback(event) {
-    instance.invokeMethodAsync('OnKeyPressed',event.key);
+    instance.invokeMethodAsync('OnKeyPressed',event.code);
 }
