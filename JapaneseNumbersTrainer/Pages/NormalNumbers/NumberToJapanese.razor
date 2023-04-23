@@ -1,5 +1,5 @@
 ﻿@page "/normal-numbers/number-to-japanese"
-@inject NavigationManager NavigationManager
+@inject NavigationService NavigationService
 @inject JapaneseService JapaneseService
 @inject OptionsService OptionsService
 @layout EmptyLayout
@@ -90,11 +90,11 @@
         }
         while (number == Number);
 
-        NavigationManager.NavigateTo($"normal-numbers/number-to-japanese?{nameof(Number)}={number}", forceLoad: false);
+        NavigationService.ChangeQueryString($"{nameof(Number)}={number}");
     }
 
     private void NavigateToMenu()
     {
-        NavigationManager.NavigateTo($"normal-numbers");
+        NavigationService.GoToNormalNumbersMenu();
     }
 }

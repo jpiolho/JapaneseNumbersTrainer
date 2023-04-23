@@ -23,6 +23,7 @@ namespace JapaneseNumbersTrainer
             builder.Services.AddScoped<JapaneseService>();
             builder.Services.AddScoped<OptionsService>();
             builder.Services.AddScoped<DialogsService>();
+            builder.Services.AddScoped<NavigationService>();
 
 
             await builder.Build().RunAsync();

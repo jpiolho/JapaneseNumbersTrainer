@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject NavigationManager NavigationManager
+@inject NavigationService NavigationService
 
 <PageTitle>Index</PageTitle>
 
@@ -9,15 +9,10 @@
         <h3>What do you want to do today?</h3>
 
         <MenuButtonList>
-            <MenuButton Text="Normal numbers" Click="OnNormalNumbersClicked" HasOptions="true" OptionsClick="OnNormalNumbersOptionsClicked" />
+            <MenuButton Text="Normal numbers" Click="NavigationService.GoToNormalNumbersMenu"
+                        HasOptions="true" OptionsClick="NavigationService.GoToNormalNumbersOptions" />
             <MenuButton Text="Clock" Disabled="true" />
             <MenuButton Text="Age" Disabled="true" />
         </MenuButtonList>
     </div>
 </div>
-
-
-@code {
-    private void OnNormalNumbersClicked() => NavigationManager.NavigateTo("normal-numbers");
-    private void OnNormalNumbersOptionsClicked() => NavigationManager.NavigateTo("normal-numbers/options");
-}

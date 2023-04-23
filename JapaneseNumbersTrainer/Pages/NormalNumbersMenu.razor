@@ -1,5 +1,5 @@
 ﻿@page "/normal-numbers"
-@inject NavigationManager NavigationManager
+@inject NavigationService NavigationService
 
 <PageTitle>Normal Numbers</PageTitle>
 
@@ -9,25 +9,10 @@
         <h3>Choose a exercise type</h3>
 
         <MenuButtonList>
-            <MenuButton Text="Number to Japanese" Click="OnMenuNumberToJapaneseClicked" />
-            <MenuButton Text="Text to number" Click="OnMenuTextToNumberClicked" Disabled="true" />
-            <MenuButton Text="Speech to number" Click="OnMenuSpeechToNumberClicked" Disabled="true" />
-            <MenuButton Text="Back" Click="OnMenuBackClicked" />
+            <MenuButton Text="Number to Japanese" Click="NavigationService.GoToNormalNumbersGameModeNumberToJapanese" />
+            <MenuButton Text="Text to number" Click="NavigationService.GoToNormalNumbersGameModeTextToNumber" Disabled="true" />
+            <MenuButton Text="Speech to number" Click="NavigationService.GoToNormalNumbersGameModeSpeechToNumber" Disabled="true" />
+            <MenuButton Text="Back" Click="NavigationService.GoToMainMenu" />
         </MenuButtonList>
     </div>
 </div>
-
-@code {
-    const string ModeNumberToJapanese = "number-to-japanese";
-    const string ModeTextToNumber = "text-to-number";
-    const string ModeSpeechToNumber = "speech-to-number";
-
-    private void OnMenuBackClicked() => NavigationManager.NavigateTo("");
-    private void OnMenuNumberToJapaneseClicked() => NavigateToMode(ModeNumberToJapanese);
-    private void OnMenuTextToNumberClicked() => NavigateToMode(ModeTextToNumber);
-    private void OnMenuSpeechToNumberClicked() => NavigateToMode(ModeSpeechToNumber);
-
-
-    private void NavigateBackToMenu() => NavigationManager.NavigateTo($"normal-numbers");
-    private void NavigateToMode(string mode) => NavigationManager.NavigateTo($"normal-numbers/{mode}");
-}
