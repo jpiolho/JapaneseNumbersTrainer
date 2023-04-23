@@ -64,17 +64,24 @@
         try
         {
             await OptionsService.SetOptionsAsync(_options!);
-            await DialogsService.SuccessAsync("Options have been saved");
-            NavigationManager.NavigateTo("..");
         }
         catch(Exception ex)
         {
             await DialogsService.ErrorAsync($"Failed to save options. Exception: {ex.Message}");
+            return;
         }
+
+        await DialogsService.SuccessAsync("Options have been saved");
+        LeaveOptions();
     }
 
     private async Task OnCancelClicked()
     {
-        NavigationManager.NavigateTo("..");
+        LeaveOptions();
+    }
+
+    private void LeaveOptions()
+    {
+        NavigationManager.NavigateTo($"normal-numbers");
     }
 }
