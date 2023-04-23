@@ -14,11 +14,11 @@ public class NavigationService
     }
 
     public void GoToMainMenu() => _navigationManager.NavigateTo("");
-    public void GoToNormalNumbersMenu() => _navigationManager.NavigateTo($"/{PathNormalNumbers}");
-    public void GoToNormalNumbersOptions() => _navigationManager.NavigateTo($"/{PathNormalNumbers}/options");
-    public void GoToNormalNumbersGameModeNumberToJapanese() => _navigationManager.NavigateTo($"/{PathNormalNumbers}/number-to-japanese");
-    public void GoToNormalNumbersGameModeTextToNumber() => _navigationManager.NavigateTo($"/{PathNormalNumbers}/text-to-number");
-    public void GoToNormalNumbersGameModeSpeechToNumber() => _navigationManager.NavigateTo($"/{PathNormalNumbers}/speech-to-number");
+    public void GoToNormalNumbersMenu() => _navigationManager.NavigateTo($"{PathNormalNumbers}");
+    public void GoToNormalNumbersOptions() => _navigationManager.NavigateTo($"{PathNormalNumbers}/options");
+    public void GoToNormalNumbersGameModeNumberToJapanese() => _navigationManager.NavigateTo($"{PathNormalNumbers}/number-to-japanese");
+    public void GoToNormalNumbersGameModeTextToNumber() => _navigationManager.NavigateTo($"{PathNormalNumbers}/text-to-number");
+    public void GoToNormalNumbersGameModeSpeechToNumber() => _navigationManager.NavigateTo($"{PathNormalNumbers}/speech-to-number");
 
 
 
