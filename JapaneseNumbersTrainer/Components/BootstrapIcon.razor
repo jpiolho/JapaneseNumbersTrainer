@@ -1,0 +1,7 @@
+﻿<i class="bi bi-@Icon" />
+
+@code {
+    [Parameter] public string? Icon { get; set; }
+
+    private string? IconToCSSClass() => !string.IsNullOrEmpty(Icon) ? $"bi-{Icon}" : null;
+}

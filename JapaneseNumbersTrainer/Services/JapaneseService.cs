@@ -1,10 +1,9 @@
-﻿namespace JapaneseNumbersTrainer.Services
+﻿namespace JapaneseNumbersTrainer.Services;
+
+public class JapaneseService
 {
-
-
-    public class JapaneseService
+    private static readonly Dictionary<int, string> Ones = new Dictionary<int, string>
     {
-        private static Dictionary<int, string> japaneseDigits = new() {
         { 0, "zero" },
         { 1, "ichi" },
         { 2, "ni" },
@@ -14,90 +13,169 @@
         { 6, "roku" },
         { 7, "nana" },
         { 8, "hachi" },
-        { 9, "kyuu" },
-        { 10, "juu" },
-        { 100, "hyaku" },
-        { 300, "sanbyaku" },
-        { 600, "roppyaku" },
-        { 800, "happyaku" },
-        { 1_000, "sen" },
-        { 3_000, "sanzen" },
-        { 8_000, "hassen" },
-        { 10_000, "man" },
-        { 100_000_000, "oku" }
-        };
+        { 9, "kyuu" }
+    };
 
-        public string ConvertToJapaneseRomaji(int number) => string.Join(' ', InternalConvertToJapaneseRomaji(number, false));
+    private static readonly Dictionary<int, string> Tens = new Dictionary<int, string>
+    {
+        { 1, "juu" },
+        { 2, "ni juu" },
+        { 3, "san juu" },
+        { 4, "yon juu" },
+        { 5, "go juu" },
+        { 6, "roku juu" },
+        { 7, "nana juu" },
+        { 8, "hachi juu" },
+        { 9, "kyuu juu" }
+    };
 
-        private List<string> InternalConvertToJapaneseRomaji(int number, bool skipIchi)
+    private static readonly Dictionary<int, string> Hundreds = new Dictionary<int, string>
+    {
+        { 1, "hyaku" },
+        { 2, "ni hyaku" },
+        { 3, "sambyaku" },
+        { 4, "yon hyaku" },
+        { 5, "go hyaku" },
+        { 6, "roppyaku" },
+        { 7, "nana hyaku" },
+        { 8, "happyaku" },
+        { 9, "kyuu hyaku" }
+    };
+
+    private static readonly Dictionary<int, string> Thousands = new Dictionary<int, string>
+    {
+        { 1, "sen" },
+        { 2, "ni sen" },
+        { 3, "sanzen" },
+        { 4, "yon sen" },
+        { 5, "go sen" },
+        { 6, "roku sen" },
+        { 7, "nana sen" },
+        { 8, "hassen" },
+        { 9, "kyuu sen" }
+    };
+
+    private static readonly Dictionary<int, string> TenThousands = new Dictionary<int, string>
+    {
+        { 0, "man" },
+        { 1, "ichi man" },
+        { 2, "ni man" },
+        { 3, "samman" },
+        { 4, "yomman" },
+        { 5, "go man" },
+        { 6, "roku man" },
+        { 7, "nana man" },
+        { 8, "hachi man" },
+        { 9, "kyuu man" }
+    };
+
+    private static readonly Dictionary<int, string> Oku = new Dictionary<int, string>
+    {
+        { 0, "oku" },
+        { 1, "ichi oku" },
+        { 2, "ni oku" },
+        { 3, "san oku" },
+        { 4, "yon oku" },
+        { 5, "go oku" },
+        { 6, "roku oku" },
+        { 7, "nana oku" },
+        { 8, "hachi oku" },
+        { 9, "kyuu oku" }
+    };
+
+    private static readonly Dictionary<int, string> Cho = new Dictionary<int, string>
+    {
+        { 0, "cho" },
+        { 1, "it cho" },
+        { 2, "ni cho" },
+        { 3, "san cho" },
+        { 4, "yon cho" },
+        { 5, "go cho" },
+        { 6, "roku cho" },
+        { 7, "nana cho" },
+        { 8, "hachi cho" },
+        { 9, "kyuu cho" }
+    };
+
+    private List<string> InternalConvertToJapaneseRomaji(long number)
+    {
+        if (number < 0)
         {
-
-            if (number < 0 || number > int.MaxValue)
-            {
-                throw new ArgumentOutOfRangeException(nameof(number), $"Number must be between 0 and {int.MaxValue}.");
-            }
-
-            var parts = new List<string>();
-
-            if (japaneseDigits.ContainsKey(number))
-            {
-                if (skipIchi && number == 1)
-                    return parts;
-
-                // Special case that after 10,000, we start adding 'ichi'
-                if (number >= 10000)
-                    parts.Add(japaneseDigits[1]);
-
-
-                parts.Add(japaneseDigits[number]);
-                return parts;
-            }
-
-            int tenThousands = number / 10000;
-            if (tenThousands > 0)
-            {
-                parts.AddRange(InternalConvertToJapaneseRomaji(tenThousands, false));
-                parts.Add(japaneseDigits[10000]);
-                number %= 10000;
-            }
-
-            int thousands = number / 1000;
-            if (thousands > 0)
-            {
-                parts.AddRange(InternalConvertToJapaneseRomaji(thousands, true));
-                parts.Add(japaneseDigits[1000]);
-                number %= 1000;
-            }
-
-            int hundreds = number / 100;
-            if (hundreds > 0)
-            {
-                parts.AddRange(InternalConvertToJapaneseRomaji(hundreds, true));
-                parts.Add(japaneseDigits[100]);
-                number %= 100;
-            }
-
-            int tens = number / 10;
-            if (tens > 0)
-            {
-                parts.AddRange(InternalConvertToJapaneseRomaji(tens, true));
-                parts.Add(japaneseDigits[10]);
-                number %= 10;
-            }
-
-            if (number > 0)
-            {
-                parts.Add(japaneseDigits[number]);
-            }
-
-            return parts;
+            throw new ArgumentOutOfRangeException(nameof(number), "Number must be 0 or positive");
         }
 
-        private List<string> DoContractions(List<string> parts)
+        List<string> romanji = new();
+
+        int cho = (int)(number / 1_000_000_000_000);
+        if (cho > 0)
         {
-            return parts;
+            if (Cho.ContainsKey(cho))
+                romanji.Add(Cho[cho]);
+            else
+            {
+                romanji.AddRange(InternalConvertToJapaneseRomaji(cho));
+                romanji.Add(Cho[0]);
+            }
+
+            number %= 1_000_000_000_000;
         }
 
+        int oku = (int)(number / 100_000_000);
+        if (oku > 0)
+        {
+            if (Oku.ContainsKey(oku))
+                romanji.Add(Oku[oku]);
+            else
+            {
+                romanji.AddRange(InternalConvertToJapaneseRomaji(oku));
+                romanji.Add(Oku[0]);
+            }
+
+            number %= 100_000_000;
+        }
+
+        int tenThousands = (int)(number / 10000);
+        if (tenThousands > 0)
+        {
+            if (TenThousands.ContainsKey(tenThousands))
+                romanji.Add(TenThousands[tenThousands]);
+            else
+            {
+                romanji.AddRange(InternalConvertToJapaneseRomaji(tenThousands));
+                romanji.Add(TenThousands[0]);
+            }
+
+            number %= 10000;
+        }
+
+        int thousands = (int)(number / 1000);
+        if (thousands > 0)
+        {
+            romanji.Add(Thousands[thousands]);
+            number %= 1000;
+        }
+
+        int hundreds = (int)(number / 100);
+        if (hundreds > 0)
+        {
+            romanji.Add(Hundreds[hundreds]);
+            number %= 100;
+        }
+
+        int tens = (int)(number / 10);
+        if (tens > 0)
+        {
+            romanji.Add(Tens[tens]);
+            number %= 10;
+        }
+
+        int ones = (int)(number % 10);
+        if (ones > 0)
+            romanji.Add(Ones[ones]);
+
+        return romanji;
     }
+
+    public string ConvertToJapaneseRomaji(long number) => string.Join(' ', InternalConvertToJapaneseRomaji(number));
 
 }

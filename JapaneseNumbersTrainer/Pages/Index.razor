@@ -8,15 +8,16 @@
         <h1>Japanese Numbers Trainer</h1>
         <h3>What do you want to do today?</h3>
 
-        <ButtonActionList>
-            <ButtonPrimary Text="Normal numbers" Click="OnNormalNumbersClicked" />
-            <ButtonPrimary Text="Clock" />
-            <ButtonPrimary Text="Age" />
-        </ButtonActionList>
+        <MenuButtonList>
+            <MenuButton Text="Normal numbers" Click="OnNormalNumbersClicked" HasOptions="true" OptionsClick="OnNormalNumbersOptionsClicked" />
+            <MenuButton Text="Clock" Disabled="true" />
+            <MenuButton Text="Age" Disabled="true" />
+        </MenuButtonList>
     </div>
 </div>
 
 
 @code {
     private void OnNormalNumbersClicked() => NavigationManager.NavigateTo("normal-numbers");
+    private void OnNormalNumbersOptionsClicked() => NavigationManager.NavigateTo("normal-numbers/options");
 }

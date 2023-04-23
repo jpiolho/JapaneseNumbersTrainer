@@ -1,0 +1,80 @@
+﻿@page "/normal-numbers/options"
+@inject OptionsService OptionsService
+@inject DialogsService DialogsService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Normal Numbers - Options</PageTitle>
+
+<div class="row">
+    <div class="col d-flex flex-column align-items-center">
+        <h1>Normal Numbers</h1>
+        <h3>Options</h3>
+    </div>
+</div>
+
+@if (_options is null)
+{
+    <div class="row">
+        <div class="col">Loading... please wait</div>
+    </div>
+    return;
+}
+
+<div class="row">
+    <div class="col">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Number range</label>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-auto">From</div>
+                <div class="col">
+                    <input type="number" min="0" class="form-control" placeholder="Minimum" @bind-value="_options.NormalNumbers.Minimum" />
+                </div>
+                <div class="col-auto">to</div>
+                <div class="col">
+                    <input type="number" min="@_options.NormalNumbers.Minimum" class="form-control" placeholder="Maximum" @bind-value="_options.NormalNumbers.Maximum" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        <MenuButtonList>
+            <MenuButton Text="Save" Click="OnSaveClicked" />
+            <MenuButton Text="Cancel" Click="OnCancelClicked" ButtonStyle="MenuButton.Style.Secondary" />
+        </MenuButtonList>
+    </div>
+</div>
+
+@code {
+    private AppOptions? _options;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _options = await OptionsService.GetOptionsAsync();
+    }
+
+    private async Task OnSaveClicked()
+    {
+        try
+        {
+            await OptionsService.SetOptionsAsync(_options!);
+            await DialogsService.SuccessAsync("Options have been saved");
+            NavigationManager.NavigateTo("..");
+        }
+        catch(Exception ex)
+        {
+            await DialogsService.ErrorAsync($"Failed to save options. Exception: {ex.Message}");
+        }
+    }
+
+    private async Task OnCancelClicked()
+    {
+        NavigationManager.NavigateTo("..");
+    }
+}
