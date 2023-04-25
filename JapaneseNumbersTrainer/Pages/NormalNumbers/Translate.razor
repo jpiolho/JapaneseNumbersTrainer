@@ -7,7 +7,7 @@
 <GameLayout>
     <Body>
         <div>
-            <input type="number" value="@_numberString" @onchange="OnNumberChanged" class="form-control" />
+            <input type="number" value="@_numberString" min="0" @onchange="OnNumberChanged" class="form-control" />
         </div>
         @if (!string.IsNullOrEmpty(_romaji))
         {
