@@ -50,11 +50,10 @@
 
     }
 
-
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         if (Number is not null)
-            _romaji = JapaneseService.ConvertToJapaneseRomaji(Number.Value);
+            _romaji = JapaneseService.ConvertToJapaneseRomaji(Number.Value, _options.UseChoonpu, _options.UseSpaces);
     }
 
 

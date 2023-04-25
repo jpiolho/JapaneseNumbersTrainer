@@ -1,4 +1,6 @@
-﻿namespace JapaneseNumbersTrainer.Services;
+﻿using System.Text;
+
+namespace JapaneseNumbersTrainer.Services;
 
 public class JapaneseService
 {
@@ -97,6 +99,18 @@ public class JapaneseService
         { 9, "kyuu cho" }
     };
 
+    private static readonly (string, string)[] Choonpu = new (string,string)[] 
+    {
+        ( "aa", "ā" ),
+        ( "ii", "ī" ),
+        ( "ee", "ē"),
+        ( "ei", "ē"),
+        ( "oo", "ō"),
+        ( "ou", "ō"),
+        ( "uu", "ū")
+    };
+
+
     private List<string> InternalConvertToJapaneseRomaji(long number)
     {
         if (number < 0)
@@ -176,6 +190,20 @@ public class JapaneseService
         return romaji;
     }
 
-    public string ConvertToJapaneseRomaji(long number) => string.Join(' ', InternalConvertToJapaneseRomaji(number));
+    public string ConvertToJapaneseRomaji(long number, bool choonpu, bool spaces)
+    {
+        var sb = new StringBuilder(string.Join(' ', InternalConvertToJapaneseRomaji(number)));
+
+        if(choonpu)
+        {
+            foreach(var entry in Choonpu)
+                sb.Replace(entry.Item1, entry.Item2);
+        }
+
+        if (!spaces)
+            sb.Replace(" ", "");
+
+        return sb.ToString();
+    }
 
 }

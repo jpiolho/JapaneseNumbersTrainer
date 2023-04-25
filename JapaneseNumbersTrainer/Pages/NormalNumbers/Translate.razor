@@ -30,11 +30,16 @@
 @code {
     private string? _numberString;
     private string? _romaji;
+    private AppOptions.NormalNumbersOptions _options;
 
+    protected override async Task OnInitializedAsync()
+    {
+        _options = (await OptionsService.GetOptionsAsync()).NormalNumbers;
+    }
 
     public void OnNumberChanged(ChangeEventArgs ev)
     {
         _numberString = (string?)ev.Value;
-        _romaji = long.TryParse(_numberString, out var number) ? JapaneseService.ConvertToJapaneseRomaji(number) : null;
+        _romaji = long.TryParse(_numberString, out var number) ? JapaneseService.ConvertToJapaneseRomaji(number, _options.UseChoonpu, _options.UseSpaces) : null;
     }
 }

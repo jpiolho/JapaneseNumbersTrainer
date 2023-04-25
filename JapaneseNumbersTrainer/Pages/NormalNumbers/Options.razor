@@ -38,6 +38,16 @@
                     <input type="number" min="@_options.NormalNumbers.Minimum" class="form-control" placeholder="Maximum" @bind-value="_options.NormalNumbers.Maximum" />
                 </div>
             </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <BootstrapCheckbox @bind-Checked="_options.NormalNumbers.UseChoonpu" Text="Use Chōonpu" />
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col">
+                    <BootstrapCheckbox @bind-Checked="_options.NormalNumbers.UseSpaces" Text="Use spaces" />
+                </div>
+            </div>
         </form>
     </div>
 </div>
