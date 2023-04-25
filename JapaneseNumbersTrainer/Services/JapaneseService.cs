@@ -104,17 +104,17 @@ public class JapaneseService
             throw new ArgumentOutOfRangeException(nameof(number), "Number must be 0 or positive");
         }
 
-        List<string> romanji = new();
+        List<string> romaji = new();
 
         int cho = (int)(number / 1_000_000_000_000);
         if (cho > 0)
         {
             if (Cho.ContainsKey(cho))
-                romanji.Add(Cho[cho]);
+                romaji.Add(Cho[cho]);
             else
             {
-                romanji.AddRange(InternalConvertToJapaneseRomaji(cho));
-                romanji.Add(Cho[0]);
+                romaji.AddRange(InternalConvertToJapaneseRomaji(cho));
+                romaji.Add(Cho[0]);
             }
 
             number %= 1_000_000_000_000;
@@ -124,11 +124,11 @@ public class JapaneseService
         if (oku > 0)
         {
             if (Oku.ContainsKey(oku))
-                romanji.Add(Oku[oku]);
+                romaji.Add(Oku[oku]);
             else
             {
-                romanji.AddRange(InternalConvertToJapaneseRomaji(oku));
-                romanji.Add(Oku[0]);
+                romaji.AddRange(InternalConvertToJapaneseRomaji(oku));
+                romaji.Add(Oku[0]);
             }
 
             number %= 100_000_000;
@@ -138,11 +138,11 @@ public class JapaneseService
         if (tenThousands > 0)
         {
             if (TenThousands.ContainsKey(tenThousands))
-                romanji.Add(TenThousands[tenThousands]);
+                romaji.Add(TenThousands[tenThousands]);
             else
             {
-                romanji.AddRange(InternalConvertToJapaneseRomaji(tenThousands));
-                romanji.Add(TenThousands[0]);
+                romaji.AddRange(InternalConvertToJapaneseRomaji(tenThousands));
+                romaji.Add(TenThousands[0]);
             }
 
             number %= 10000;
@@ -151,29 +151,29 @@ public class JapaneseService
         int thousands = (int)(number / 1000);
         if (thousands > 0)
         {
-            romanji.Add(Thousands[thousands]);
+            romaji.Add(Thousands[thousands]);
             number %= 1000;
         }
 
         int hundreds = (int)(number / 100);
         if (hundreds > 0)
         {
-            romanji.Add(Hundreds[hundreds]);
+            romaji.Add(Hundreds[hundreds]);
             number %= 100;
         }
 
         int tens = (int)(number / 10);
         if (tens > 0)
         {
-            romanji.Add(Tens[tens]);
+            romaji.Add(Tens[tens]);
             number %= 10;
         }
 
         int ones = (int)(number % 10);
         if (ones > 0)
-            romanji.Add(Ones[ones]);
+            romaji.Add(Ones[ones]);
 
-        return romanji;
+        return romaji;
     }
 
     public string ConvertToJapaneseRomaji(long number) => string.Join(' ', InternalConvertToJapaneseRomaji(number));

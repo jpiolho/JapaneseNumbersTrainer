@@ -9,16 +9,16 @@
 <GameLayout>
     <Body>
         <h1>@Number</h1>
-        <Hiddeable Visible="_showRomanji">
-            <h3>@_romanji</h3>
+        <Hiddeable Visible="_showRomaji">
+            <h3>@_romaji</h3>
         </Hiddeable>
     </Body>
 
     <Footer>
         <MenuButtonList>
-            @if (!_showRomanji)
+            @if (!_showRomaji)
             {
-                <MenuButton Text="Reveal romanji" Click="RevealRomanji" />
+                <MenuButton Text="Reveal romaji" Click="RevealRomaji" />
             }
             else
             {
@@ -35,8 +35,8 @@
 
 
     private AppOptions.NormalNumbersOptions _options = null!;
-    private string? _romanji;
-    private bool _showRomanji;
+    private string? _romaji;
+    private bool _showRomaji;
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,7 +54,7 @@
     protected override void OnParametersSet()
     {
         if (Number is not null)
-            _romanji = JapaneseService.ConvertToJapaneseRomaji(Number.Value);
+            _romaji = JapaneseService.ConvertToJapaneseRomaji(Number.Value);
     }
 
 
@@ -62,9 +62,9 @@
     {
         if (key == "Space")
         {
-            if (!_showRomanji)
+            if (!_showRomaji)
             {
-                RevealRomanji();
+                RevealRomaji();
             }
             else
             {
@@ -73,16 +73,16 @@
         }
     }
 
-    private void RevealRomanji()
+    private void RevealRomaji()
     {
-        _showRomanji = true;
+        _showRomaji = true;
     }
 
     private void NavigateToRandomNumber()
     {
         int number;
 
-        _showRomanji = false;
+        _showRomaji = false;
 
         do
         {
