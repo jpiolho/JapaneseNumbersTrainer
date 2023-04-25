@@ -1,0 +1,40 @@
+﻿@page "/normal-numbers/translate"
+@inject NavigationService NavigationService
+@inject JapaneseService JapaneseService
+@inject OptionsService OptionsService
+@layout EmptyLayout
+
+<GameLayout>
+    <Body>
+        <div>
+            <input type="number" value="@_numberString" @onchange="OnNumberChanged" class="form-control" />
+        </div>
+        @if (!string.IsNullOrEmpty(_romaji))
+        {
+            <h3>@_romaji</h3>
+        }
+        else
+        {
+            <h3>&nbsp;</h3>
+        }
+    </Body>
+
+    <Footer>
+        <MenuButtonList>
+            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigationService.GoToNormalNumbersMenu" />
+        </MenuButtonList>
+    </Footer>
+</GameLayout>
+
+
+@code {
+    private string? _numberString;
+    private string? _romaji;
+
+
+    public void OnNumberChanged(ChangeEventArgs ev)
+    {
+        _numberString = (string?)ev.Value;
+        _romaji = long.TryParse(_numberString, out var number) ? JapaneseService.ConvertToJapaneseRomaji(number) : null;
+    }
+}

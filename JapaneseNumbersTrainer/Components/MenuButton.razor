@@ -1,7 +1,7 @@
-﻿@if(HasOptions)
+﻿@if (HasOptions)
 {
     <div class="btn-group" @attributes=Attributes>
-        <button type="button" class="btn @StyleToCssClass()" disabled="@Disabled" @onclick="Click">@Text</button>
+        <button type="button" class="btn @StyleToCssClass()" disabled="@Disabled" @onclick="Click">@GetButtonContent()</button>
         <button type="button" class="btn @StyleToCssClass()" disabled="@Disabled" @onclick="OptionsClick" style="flex:0">
             <BootstrapIcon Icon="gear-fill" />
         </button>
@@ -9,16 +9,18 @@
 }
 else
 {
-    <button type="button" class="btn @StyleToCssClass()" disabled="@Disabled" @onclick="Click" @attributes=Attributes>@Text</button>
+    <button type="button" class="btn @StyleToCssClass()" disabled="@Disabled" @onclick="Click" @attributes=Attributes>@GetButtonContent()</button>
 }
 
 @code {
     public enum Style
     {
         Primary,
-        Secondary
+        Secondary,
+        Info
     }
 
+    [Parameter] public string? Icon { get; set; }
     [Parameter] public string? Text { get; set; }
     [Parameter] public bool HasOptions { get; set; }
     [Parameter] public EventCallback OptionsClick { get; set; }
@@ -31,6 +33,19 @@ else
     {
         Style.Primary => "btn-primary",
         Style.Secondary => "btn-secondary",
+        Style.Info => "btn-info",
         _ => throw new Exception($"Unsupported button style: {ButtonStyle}")
     };
+
+
+    private RenderFragment GetButtonContent()
+    {
+        return @<text>
+            @if(!string.IsNullOrEmpty(Icon))
+            {
+                <BootstrapIcon Icon="@Icon" Class="me-2" />
+            }
+            @Text
+        </text>;
+    }
 }

@@ -19,6 +19,7 @@ public class NavigationService
     public void GoToNormalNumbersGameModeNumberToJapanese() => _navigationManager.NavigateTo($"{PathNormalNumbers}/number-to-japanese");
     public void GoToNormalNumbersGameModeTextToNumber() => _navigationManager.NavigateTo($"{PathNormalNumbers}/text-to-number");
     public void GoToNormalNumbersGameModeSpeechToNumber() => _navigationManager.NavigateTo($"{PathNormalNumbers}/speech-to-number");
+    public void GoToNormalNumbersTranslate() => _navigationManager.NavigateTo($"{PathNormalNumbers}/translate");
 
 
 
