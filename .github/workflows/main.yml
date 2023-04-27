@@ -40,6 +40,13 @@ jobs:
         run: |
           sed -i 's|<base href="/" />|<base href="/JapaneseNumbersTrainer/" />|' index.html
       
+      - name: Append timestamp to references in index.html
+        working-directory: ./JapaneseNumbersTrainer/wwwroot
+        run: |
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          sed -i "/<link\s.*href=\"\([^hH][^tT][^tT][^pP][^sS]?.*\)/ s/\(href=\"\)\(.*\)\(\".*\)/\1\2?v=$timestamp\3/g" index.html
+          sed -i "/<script\s.*src=\"\([^hH][^tT][^tT][^pP][^sS]?.*\)/ s/\(src=\"\)\(.*\)\(\".*\)/\1\2?v=$timestamp\3/g" index.html
+      
       # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
         working-directory: ./JapaneseNumbersTrainer
