@@ -1,0 +1,16 @@
+﻿@page "/dates"
+@inject NavigationService NavigationService
+
+<PageTitle>Dates</PageTitle>
+
+<div class="row">
+    <div class="col d-flex flex-column align-items-center">
+        <h1>Dates</h1>
+        <h3>Choose a exercise type</h3>
+
+        <MenuButtonList>
+            <MenuButton Text="Weekdays" Click="NavigationService.GoToDatesGameModeWeekdays" />
+            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigationService.GoToMainMenu" />
+        </MenuButtonList>
+    </div>
+</div>

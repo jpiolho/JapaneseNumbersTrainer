@@ -1,6 +1,6 @@
-﻿@page "/normal-numbers/number-to-japanese"
+﻿@page "/dates/weekdays"
 @inject NavigationService NavigationService
-@inject JapaneseNumbersService JapaneseService
+@inject JapaneseWeekdaysService JapaneseService
 @inject OptionsService OptionsService
 @layout EmptyLayout
 
@@ -8,7 +8,7 @@
 
 <GameLayout>
     <Body>
-        <h1>@Number</h1>
+        <h1>@_weekday</h1>
         <Hiddeable Visible="_showRomaji">
             <h3>@_romaji</h3>
         </Hiddeable>
@@ -22,7 +22,7 @@
             }
             else
             {
-                <MenuButton Text="Next number" Click="NavigateToRandomNumber" />
+                <MenuButton Text="Next weekday" Click="NavigateToRandomWeekday" />
             }
             <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigateToMenu" />
         </MenuButtonList>
@@ -31,29 +31,30 @@
 
 
 @code {
-    [Parameter, SupplyParameterFromQuery] public int? Number { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? DayOfWeek { get; set; }
 
 
-    private AppOptions.NormalNumbersOptions _options = null!;
+    private DayOfWeek? _weekday;
     private string? _romaji;
     private bool _showRomaji;
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        _options = (await OptionsService.GetOptionsAsync()).NormalNumbers;
-
-        if(Number is null)
+        if(_weekday is null)
         {
-            NavigateToRandomNumber();
-            return;
+            NavigateToRandomWeekday();
         }
-
+        
+        return Task.CompletedTask;
     }
 
     protected override void OnParametersSet()
     {
-        if (Number is not null)
-            _romaji = JapaneseService.ConvertToJapaneseRomaji(Number.Value, _options.UseChoonpu, _options.UseSpaces);
+        if (DayOfWeek is not null)
+        {
+            _weekday = Enum.Parse<DayOfWeek>(DayOfWeek, true);
+            _romaji = JapaneseService.WeekdayToRomaji(_weekday.Value);
+        }
     }
 
 
@@ -67,7 +68,7 @@
             }
             else
             {
-                NavigateToRandomNumber();
+                NavigateToRandomWeekday();
             }
         }
     }
@@ -77,23 +78,25 @@
         _showRomaji = true;
     }
 
-    private void NavigateToRandomNumber()
+    private void NavigateToRandomWeekday()
     {
-        int number;
+        DayOfWeek weekday;
 
         _showRomaji = false;
 
+
+        var weekdays = Enum.GetValues<DayOfWeek>();
         do
         {
-            number = Random.Shared.Next(_options.Minimum, _options.Maximum+1);
+            weekday = weekdays[Random.Shared.Next(0, weekdays.Length)];
         }
-        while (number == Number);
+        while (weekday == _weekday);
 
-        NavigationService.ChangeQueryString($"{nameof(Number)}={number}");
+        NavigationService.ChangeQueryString($"{nameof(DayOfWeek)}={weekday}");
     }
 
     private void NavigateToMenu()
     {
-        NavigationService.GoToNormalNumbersMenu();
+        NavigationService.GoToDatesMenu();
     }
 }

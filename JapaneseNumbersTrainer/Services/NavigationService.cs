@@ -7,6 +7,7 @@ public class NavigationService
     private NavigationManager _navigationManager;
 
     private const string PathNormalNumbers = "normal-numbers";
+    private const string PathDates = "dates";
 
     public NavigationService(NavigationManager navigationManager)
     {
@@ -20,6 +21,8 @@ public class NavigationService
     public void GoToNormalNumbersGameModeTextToNumber() => _navigationManager.NavigateTo($"{PathNormalNumbers}/text-to-number");
     public void GoToNormalNumbersGameModeSpeechToNumber() => _navigationManager.NavigateTo($"{PathNormalNumbers}/speech-to-number");
     public void GoToNormalNumbersTranslate() => _navigationManager.NavigateTo($"{PathNormalNumbers}/translate");
+    public void GoToDatesMenu() => _navigationManager.NavigateTo($"{PathDates}");
+    public void GoToDatesGameModeWeekdays() => _navigationManager.NavigateTo($"{PathDates}/weekdays");
 
 
 

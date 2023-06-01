@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace JapaneseNumbersTrainer.Services;
+namespace JapaneseNumbersTrainer.Services.Japanese;
 
-public class JapaneseService
+public class JapaneseNumbersService
 {
     private static readonly Dictionary<int, string> Ones = new Dictionary<int, string>
     {
@@ -99,7 +99,7 @@ public class JapaneseService
         { 9, "kyuu cho" }
     };
 
-    private static readonly (string, string)[] Choonpu = new (string,string)[] 
+    private static readonly (string, string)[] Choonpu = new (string, string)[]
     {
         ( "aa", "ā" ),
         ( "ii", "ī" ),
@@ -194,9 +194,9 @@ public class JapaneseService
     {
         var sb = new StringBuilder(string.Join(' ', InternalConvertToJapaneseRomaji(number)));
 
-        if(choonpu)
+        if (choonpu)
         {
-            foreach(var entry in Choonpu)
+            foreach (var entry in Choonpu)
                 sb.Replace(entry.Item1, entry.Item2);
         }
 
