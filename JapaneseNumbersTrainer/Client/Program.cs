@@ -21,8 +21,11 @@ namespace JapaneseNumbersTrainer
             builder.Services.AddSweetAlert2();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            
             builder.Services.AddScoped<JapaneseNumbersService>();
             builder.Services.AddScoped<JapaneseWeekdaysService>();
+            builder.Services.AddScoped<JapaneseRomajiService>();
+            
             builder.Services.AddScoped<OptionsService>();
             builder.Services.AddScoped<DialogsService>();
             builder.Services.AddScoped<NavigationService>();

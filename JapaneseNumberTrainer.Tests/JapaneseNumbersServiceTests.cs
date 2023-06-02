@@ -9,7 +9,7 @@ namespace JapaneseNumberTrainer.Tests
         [SetUp]
         public void Setup()
         {
-            _service = new JapaneseNumbersService();
+            _service = new JapaneseNumbersService(new JapaneseRomajiService());
         }
 
         [Test]

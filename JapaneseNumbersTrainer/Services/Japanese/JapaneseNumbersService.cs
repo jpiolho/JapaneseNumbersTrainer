@@ -99,17 +99,12 @@ public class JapaneseNumbersService
         { 9, "kyuu cho" }
     };
 
-    private static readonly (string, string)[] Choonpu = new (string, string)[]
-    {
-        ( "aa", "ā" ),
-        ( "ii", "ī" ),
-        ( "ee", "ē"),
-        ( "ei", "ē"),
-        ( "oo", "ō"),
-        ( "ou", "ō"),
-        ( "uu", "ū")
-    };
+    private JapaneseRomajiService _romajiService;
 
+    public JapaneseNumbersService(JapaneseRomajiService romajiService)
+    {
+        _romajiService = romajiService;
+    }
 
     private List<string> InternalConvertToJapaneseRomaji(long number)
     {
@@ -195,10 +190,7 @@ public class JapaneseNumbersService
         var sb = new StringBuilder(string.Join(' ', InternalConvertToJapaneseRomaji(number)));
 
         if (choonpu)
-        {
-            foreach (var entry in Choonpu)
-                sb.Replace(entry.Item1, entry.Item2);
-        }
+            sb = _romajiService.ToChoonpu(sb);
 
         if (!spaces)
             sb.Replace(" ", "");
