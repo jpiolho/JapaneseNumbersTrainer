@@ -1,6 +1,6 @@
-﻿@page "/dates/weekdays"
+﻿@page "/dates/months"
 @inject NavigationService NavigationService
-@inject JapaneseWeekdaysService JapaneseService
+@inject JapaneseDateService JapaneseService
 @inject OptionsService OptionsService
 @layout EmptyLayout
 
@@ -8,7 +8,7 @@
 
 <GameLayout>
     <Body>
-        <h1>@_weekday</h1>
+        <h1>@(Month.HasValue ? (Months)Month.Value : null)</h1>
         <Hiddeable Visible="_showRomaji">
             <h3>@_romaji</h3>
         </Hiddeable>
@@ -22,7 +22,7 @@
             }
             else
             {
-                <MenuButton Text="Next weekday" Click="NavigateToRandomWeekday" />
+                <MenuButton Text="Next month" Click="NavigateToRandomMonth" />
             }
             <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigateToMenu" />
         </MenuButtonList>
@@ -31,29 +31,27 @@
 
 
 @code {
-    [Parameter, SupplyParameterFromQuery] public string? DayOfWeek { get; set; }
+    [Parameter, SupplyParameterFromQuery] public int? Month { get; set; }
 
 
-    private DayOfWeek? _weekday;
     private string? _romaji;
     private bool _showRomaji;
 
     protected override Task OnInitializedAsync()
     {
-        if(_weekday is null)
+        if(Month is null)
         {
-            NavigateToRandomWeekday();
+            NavigateToRandomMonth();
         }
-        
+
         return Task.CompletedTask;
     }
 
     protected override void OnParametersSet()
     {
-        if (DayOfWeek is not null)
+        if (Month is not null)
         {
-            _weekday = Enum.Parse<DayOfWeek>(DayOfWeek, true);
-            _romaji = JapaneseService.WeekdayToRomaji(_weekday.Value);
+            _romaji = JapaneseService.MonthToRomaji((Months)Month.Value);
         }
     }
 
@@ -68,7 +66,7 @@
             }
             else
             {
-                NavigateToRandomWeekday();
+                NavigateToRandomMonth();
             }
         }
     }
@@ -78,21 +76,20 @@
         _showRomaji = true;
     }
 
-    private void NavigateToRandomWeekday()
+    private void NavigateToRandomMonth()
     {
-        DayOfWeek weekday;
-
         _showRomaji = false;
 
+        int month;
 
-        var weekdays = Enum.GetValues<DayOfWeek>();
+        var months = Enum.GetValues<Months>();
         do
         {
-            weekday = weekdays[Random.Shared.Next(0, weekdays.Length)];
+            month = (int)months[Random.Shared.Next(0, months.Length)];
         }
-        while (weekday == _weekday);
+        while (month == Month);
 
-        NavigationService.ChangeQueryString($"{nameof(DayOfWeek)}={weekday}");
+        NavigationService.ChangeQueryString($"{nameof(Month)}={month}");
     }
 
     private void NavigateToMenu()

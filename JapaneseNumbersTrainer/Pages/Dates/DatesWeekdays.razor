@@ -1,0 +1,102 @@
+﻿@page "/dates/weekdays"
+@inject NavigationService NavigationService
+@inject JapaneseDateService JapaneseService
+@inject OptionsService OptionsService
+@layout EmptyLayout
+
+<KeyPressListener OnKeyPressed="OnKeyPressed" />
+
+<GameLayout>
+    <Body>
+        <h1>@_weekday</h1>
+        <Hiddeable Visible="_showRomaji">
+            <h3>@_romaji</h3>
+        </Hiddeable>
+    </Body>
+
+    <Footer>
+        <MenuButtonList>
+            @if (!_showRomaji)
+            {
+                <MenuButton Text="Reveal romaji" Click="RevealRomaji" />
+            }
+            else
+            {
+                <MenuButton Text="Next weekday" Click="NavigateToRandomWeekday" />
+            }
+            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigateToMenu" />
+        </MenuButtonList>
+    </Footer>
+</GameLayout>
+
+
+@code {
+    [Parameter, SupplyParameterFromQuery] public string? DayOfWeek { get; set; }
+
+
+    private DayOfWeek? _weekday;
+    private string? _romaji;
+    private bool _showRomaji;
+
+    protected override Task OnInitializedAsync()
+    {
+        if(_weekday is null)
+        {
+            NavigateToRandomWeekday();
+        }
+        
+        return Task.CompletedTask;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (DayOfWeek is not null)
+        {
+            _weekday = Enum.Parse<DayOfWeek>(DayOfWeek, true);
+            _romaji = JapaneseService.WeekdayToRomaji(_weekday.Value);
+        }
+    }
+
+
+    private void OnKeyPressed(string key)
+    {
+        if (key == "Space")
+        {
+            if (!_showRomaji)
+            {
+                RevealRomaji();
+            }
+            else
+            {
+                NavigateToRandomWeekday();
+            }
+        }
+    }
+
+    private void RevealRomaji()
+    {
+        _showRomaji = true;
+    }
+
+    private void NavigateToRandomWeekday()
+    {
+        DayOfWeek weekday;
+
+        _showRomaji = false;
+
+
+        var weekdays = Enum.GetValues<DayOfWeek>();
+        do
+        {
+            weekday = weekdays[Random.Shared.Next(0, weekdays.Length)];
+        }
+        while (weekday == _weekday);
+
+        NavigationService.ChangeQueryString($"{nameof(DayOfWeek)}={weekday}");
+    }
+
+    private void NavigateToMenu()
+    {
+        NavigationService.GoToDatesMenu();
+    }
+}

@@ -23,7 +23,7 @@ namespace JapaneseNumbersTrainer
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             
             builder.Services.AddScoped<JapaneseNumbersService>();
-            builder.Services.AddScoped<JapaneseWeekdaysService>();
+            builder.Services.AddScoped<JapaneseDateService>();
             builder.Services.AddScoped<JapaneseRomajiService>();
             
             builder.Services.AddScoped<OptionsService>();

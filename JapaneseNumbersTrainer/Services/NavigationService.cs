@@ -23,6 +23,7 @@ public class NavigationService
     public void GoToNormalNumbersTranslate() => _navigationManager.NavigateTo($"{PathNormalNumbers}/translate");
     public void GoToDatesMenu() => _navigationManager.NavigateTo($"{PathDates}");
     public void GoToDatesGameModeWeekdays() => _navigationManager.NavigateTo($"{PathDates}/weekdays");
+    public void GoToDatesGameModeMonths() => _navigationManager.NavigateTo($"{PathDates}/months");
 
 
 

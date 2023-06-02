@@ -1,15 +1,16 @@
-﻿using JapaneseNumbersTrainer.Services.Japanese;
+﻿using JapaneseNumbersTrainer.Base;
+using JapaneseNumbersTrainer.Services.Japanese;
 
 namespace JapaneseNumberTrainer.Tests
 {
-    public class JapaneseWeekdaysServiceTests
+    public class JapaneseDateServiceTests
     {
-        private JapaneseWeekdaysService _service;
+        private JapaneseDateService _service;
 
         [SetUp]
         public void Setup()
         {
-            _service = new JapaneseWeekdaysService();
+            _service = new JapaneseDateService();
         }
 
         [Test]
@@ -25,6 +26,25 @@ namespace JapaneseNumberTrainer.Tests
         {
             var result = _service.WeekdayToRomaji(weekday);
 
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase(Months.January, "ichigatsu")]
+        [TestCase(Months.February, "nigatsu")]
+        [TestCase(Months.March, "sangatsu")]
+        [TestCase(Months.April, "shigatsu")]
+        [TestCase(Months.May, "gogatsu")]
+        [TestCase(Months.June, "rokugatsu")]
+        [TestCase(Months.July, "shichigatsu")]
+        [TestCase(Months.August, "hachigatsu")]
+        [TestCase(Months.September, "kugatsu")]
+        [TestCase(Months.October, "juugatsu")]
+        [TestCase(Months.November, "juuichigatsu")]
+        [TestCase(Months.December, "juunigatsu")]
+        public void MonthToRomaji_ShouldReturnCorrectRomaji(Months month, string expected)
+        {
+            var result = _service.MonthToRomaji(month);
             Assert.That(result, Is.EqualTo(expected));
         }
     }
