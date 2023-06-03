@@ -12,6 +12,7 @@ public class NavigationService
     }
 
     public void Goto(string route) => _navigationManager.NavigateTo(route.Substring(1));
+    public void ForceRefresh() => _navigationManager.NavigateTo("", true);
 
     public void ChangeQueryString(string queryString, bool forceLoad = false)
     {
