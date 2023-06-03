@@ -1,0 +1,15 @@
+﻿@attribute [Route(Routes.DatesFullDate)]
+@inject NavigationService NavigationService
+@inject JapaneseDateService JapaneseDateService
+@inject JapaneseNumbersService JapaneseNumberService
+@inject OptionsService OptionsService
+@layout EmptyLayout
+
+@if (!_validParameters)
+    return;
+
+<RevealGame Prompt="@($"{Day:00}-{Month:00}-{Year}")"
+            Answer="@_romaji"
+            @bind-Reveal="@_showRomaji"
+            Next="NavigateToRandomDate"
+            Exit="NavigateToMenu" />

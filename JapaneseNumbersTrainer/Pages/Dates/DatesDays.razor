@@ -7,7 +7,7 @@
 @if (Day is null)
     return;
 
-<RevealGame Prompt="@(Day.ToString())"
+<RevealGame Prompt="@($"Day {Utils.ToStringOrdinal(Day.Value)}")"
             Answer="@Romaji"
             @bind-Reveal="@_showRomaji"
             Next="NavigateToRandomDay"

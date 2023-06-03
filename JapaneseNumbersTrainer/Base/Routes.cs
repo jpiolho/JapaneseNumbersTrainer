@@ -13,5 +13,6 @@ public static class Routes
     public const string DatesWeekdays = $"/{DatesMenu}/weekdays";
     public const string DatesMonths = $"/{DatesMenu}/months";
     public const string DatesDays = $"/{DatesMenu}/days";
+    public const string DatesFullDate = $"/{DatesMenu}/full-date";
 
 }
