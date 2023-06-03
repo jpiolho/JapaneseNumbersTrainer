@@ -4,7 +4,7 @@ namespace JapaneseNumbersTrainer.Services.Japanese;
 
 public class JapaneseRomajiService
 {
-    
+
     private static readonly (string, string)[] Choonpu = new (string, string)[]
     {
         ( "aa", "ā" ),

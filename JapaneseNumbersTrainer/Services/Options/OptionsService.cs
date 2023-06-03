@@ -1,5 +1,4 @@
 ﻿using Blazored.LocalStorage;
-using System.Text.Json;
 
 namespace JapaneseNumbersTrainer.Services.Options;
 
@@ -11,7 +10,7 @@ public class OptionsService
     {
         _localStorage = localStorage;
     }
-    
+
     public async Task<AppOptions> GetOptionsAsync()
     {
         var options = await _localStorage.GetItemAsync<AppOptions>("options");

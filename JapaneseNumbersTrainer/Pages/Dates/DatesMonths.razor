@@ -4,92 +4,39 @@
 @inject OptionsService OptionsService
 @layout EmptyLayout
 
-<KeyPressListener OnKeyPressed="OnKeyPressed" />
+@if (MonthAsString is null)
+    return;
 
-<GameLayout>
-    <Body>
-        <h1>@(Month.HasValue ? (Months)Month.Value : null)</h1>
-        <Hiddeable Visible="_showRomaji">
-            <h3>@_romaji</h3>
-        </Hiddeable>
-    </Body>
-
-    <Footer>
-        <MenuButtonList>
-            @if (!_showRomaji)
-            {
-                <MenuButton Text="Reveal romaji" Click="RevealRomaji" />
-            }
-            else
-            {
-                <MenuButton Text="Next month" Click="NavigateToRandomMonth" />
-            }
-            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigateToMenu" />
-        </MenuButtonList>
-    </Footer>
-</GameLayout>
-
+<RevealGame Prompt="@(Month.ToString())"
+            Answer="@Romaji"
+            @bind-Reveal="@_showRomaji"
+            Next="NavigateToRandomMonth"
+            Exit="NavigateToMenu" />
 
 @code {
-    [Parameter, SupplyParameterFromQuery] public int? Month { get; set; }
+    private const string QueryParameterMonth = "month";
+    [Parameter, SupplyParameterFromQuery(Name = QueryParameterMonth)] public string? MonthAsString { get; set; }
 
+    private Month? Month => MonthAsString is not null ? Enum.Parse<Month>(MonthAsString, true) : null;
+    private string? Romaji => Month.HasValue ? JapaneseService.MonthToRomaji(Month.Value) : null;
 
-    private string? _romaji;
     private bool _showRomaji;
 
     protected override Task OnInitializedAsync()
     {
-        if(Month is null)
-        {
+        if (Month is null)
             NavigateToRandomMonth();
-        }
 
         return Task.CompletedTask;
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (Month is not null)
-        {
-            _romaji = JapaneseService.MonthToRomaji((Months)Month.Value);
-        }
-    }
-
-
-    private void OnKeyPressed(string key)
-    {
-        if (key == "Space")
-        {
-            if (!_showRomaji)
-            {
-                RevealRomaji();
-            }
-            else
-            {
-                NavigateToRandomMonth();
-            }
-        }
-    }
-
-    private void RevealRomaji()
-    {
-        _showRomaji = true;
     }
 
     private void NavigateToRandomMonth()
     {
         _showRomaji = false;
 
-        int month;
+        var month = Utils.GetNewRandomFromArrayNullable(Enum.GetValues<Month>(), Month);
 
-        var months = Enum.GetValues<Months>();
-        do
-        {
-            month = (int)months[Random.Shared.Next(0, months.Length)];
-        }
-        while (month == Month);
-
-        NavigationService.ChangeQueryString($"{nameof(Month)}={month}");
+        NavigationService.ChangeQueryString($"{QueryParameterMonth}={month}");
     }
 
     private void NavigateToMenu()

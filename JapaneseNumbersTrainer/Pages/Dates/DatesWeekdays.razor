@@ -4,95 +4,39 @@
 @inject OptionsService OptionsService
 @layout EmptyLayout
 
-<KeyPressListener OnKeyPressed="OnKeyPressed" />
+@if (Weekday is null)
+    return;
 
-<GameLayout>
-    <Body>
-        <h1>@_weekday</h1>
-        <Hiddeable Visible="_showRomaji">
-            <h3>@_romaji</h3>
-        </Hiddeable>
-    </Body>
-
-    <Footer>
-        <MenuButtonList>
-            @if (!_showRomaji)
-            {
-                <MenuButton Text="Reveal romaji" Click="RevealRomaji" />
-            }
-            else
-            {
-                <MenuButton Text="Next weekday" Click="NavigateToRandomWeekday" />
-            }
-            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigateToMenu" />
-        </MenuButtonList>
-    </Footer>
-</GameLayout>
-
+<RevealGame Prompt="@(Weekday?.ToString())"
+            Answer="@Romaji"
+            @bind-Reveal="@_showRomaji"
+            Next="NavigateToRandomWeekday"
+            Exit="NavigateToMenu" />
 
 @code {
-    [Parameter, SupplyParameterFromQuery] public string? DayOfWeek { get; set; }
+    private const string QueryParameterWeekDay = "weekday";
+    [Parameter, SupplyParameterFromQuery(Name = QueryParameterWeekDay)] public string? DayOfWeekAsString { get; set; }
 
+    private DayOfWeek? Weekday => DayOfWeekAsString is not null ? Enum.Parse<DayOfWeek>(DayOfWeekAsString, true) : null;
+    private string? Romaji => Weekday.HasValue ? JapaneseService.WeekdayToRomaji(Weekday.Value) : null;
 
-    private DayOfWeek? _weekday;
-    private string? _romaji;
     private bool _showRomaji;
 
     protected override Task OnInitializedAsync()
     {
-        if(_weekday is null)
-        {
+        if (Weekday is null)
             NavigateToRandomWeekday();
-        }
-        
+
         return Task.CompletedTask;
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (DayOfWeek is not null)
-        {
-            _weekday = Enum.Parse<DayOfWeek>(DayOfWeek, true);
-            _romaji = JapaneseService.WeekdayToRomaji(_weekday.Value);
-        }
-    }
-
-
-    private void OnKeyPressed(string key)
-    {
-        if (key == "Space")
-        {
-            if (!_showRomaji)
-            {
-                RevealRomaji();
-            }
-            else
-            {
-                NavigateToRandomWeekday();
-            }
-        }
-    }
-
-    private void RevealRomaji()
-    {
-        _showRomaji = true;
     }
 
     private void NavigateToRandomWeekday()
     {
-        DayOfWeek weekday;
-
         _showRomaji = false;
 
+        var weekday = Utils.GetNewRandomFromArrayNullable(Enum.GetValues<DayOfWeek>(), Weekday);
 
-        var weekdays = Enum.GetValues<DayOfWeek>();
-        do
-        {
-            weekday = weekdays[Random.Shared.Next(0, weekdays.Length)];
-        }
-        while (weekday == _weekday);
-
-        NavigationService.ChangeQueryString($"{nameof(DayOfWeek)}={weekday}");
+        NavigationService.ChangeQueryString($"{QueryParameterWeekDay}={weekday}");
     }
 
     private void NavigateToMenu()

@@ -1,0 +1,57 @@
+﻿<KeyPressListener OnKeyPressed="OnKeyPressedAsync" />
+
+<GameLayout>
+    <Body>
+        <h1>@Prompt</h1>
+        <Hiddeable Visible="Reveal">
+            <h3>@Answer</h3>
+        </Hiddeable>
+    </Body>
+
+    <Footer>
+        <MenuButtonList>
+            @if (!Reveal)
+            {
+                <MenuButton Text="@RevealAnswerButtonText" Click="RevealAnswerAsync" />
+            }
+            else
+            {
+                <MenuButton Text="@NextButtonText" Click="Next" />
+            }
+            <MenuButton Text="Exit" ButtonStyle="MenuButton.Style.Secondary" Click="Exit" />
+        </MenuButtonList>
+    </Footer>
+</GameLayout>
+
+
+@code {
+    [Parameter] public string? Prompt { get; set; }
+    [Parameter] public string? Answer { get; set; }
+    [Parameter] public string? RevealAnswerButtonText { get; set; } = "Reveal";
+    [Parameter] public string? NextButtonText { get; set; } = "Next";
+    [Parameter] public bool Reveal { get; set; }
+    [Parameter] public EventCallback<bool> RevealChanged { get; set; }
+    [Parameter] public EventCallback Next { get; set; }
+    [Parameter] public EventCallback Exit { get; set; }
+
+    private async Task OnKeyPressedAsync(string key)
+    {
+        if (key == "Space")
+        {
+            if (!Reveal)
+            {
+                await RevealAnswerAsync();
+            }
+            else
+            {
+                await Next.InvokeAsync();
+            }
+        }
+    }
+
+
+    private async Task RevealAnswerAsync()
+    {
+        await RevealChanged.InvokeAsync(true);
+    }
+}

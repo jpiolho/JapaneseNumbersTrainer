@@ -1,6 +1,6 @@
 ﻿namespace JapaneseNumbersTrainer.Base;
 
-public enum Months : int
+public enum Month : int
 {
     January = 1,
     February,
