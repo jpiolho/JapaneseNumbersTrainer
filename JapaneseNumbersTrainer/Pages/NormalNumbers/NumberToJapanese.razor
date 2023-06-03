@@ -1,38 +1,17 @@
-﻿@page "/normal-numbers/number-to-japanese"
+﻿@attribute [Route(Routes.NormalNumbersNumberToJapanese)]
 @inject NavigationService NavigationService
 @inject JapaneseNumbersService JapaneseService
 @inject OptionsService OptionsService
 @layout EmptyLayout
 
-<KeyPressListener OnKeyPressed="OnKeyPressed" />
-
-<GameLayout>
-    <Body>
-        <h1>@Number</h1>
-        <Hiddeable Visible="_showRomaji">
-            <h3>@_romaji</h3>
-        </Hiddeable>
-    </Body>
-
-    <Footer>
-        <MenuButtonList>
-            @if (!_showRomaji)
-            {
-                <MenuButton Text="Reveal romaji" Click="RevealRomaji" />
-            }
-            else
-            {
-                <MenuButton Text="Next number" Click="NavigateToRandomNumber" />
-            }
-            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigateToMenu" />
-        </MenuButtonList>
-    </Footer>
-</GameLayout>
-
+<RevealGame Prompt="@Number.ToString()"
+            Answer="@_romaji"
+            @bind-Reveal="_showRomaji"
+            Next="NavigateToRandomNumber"
+            Exit="NavigateToMenu" />
 
 @code {
     [Parameter, SupplyParameterFromQuery] public int? Number { get; set; }
-
 
     private AppOptions.NormalNumbersOptions _options = null!;
     private string? _romaji;
@@ -42,7 +21,7 @@
     {
         _options = (await OptionsService.GetOptionsAsync()).NormalNumbers;
 
-        if(Number is null)
+        if (Number is null)
         {
             NavigateToRandomNumber();
             return;
@@ -83,17 +62,13 @@
 
         _showRomaji = false;
 
-        do
-        {
-            number = Random.Shared.Next(_options.Minimum, _options.Maximum+1);
-        }
-        while (number == Number);
+        number = Utils.GetNewRandomInt(_options.Minimum, _options.Maximum + 1, Number);
 
         NavigationService.ChangeQueryString($"{nameof(Number)}={number}");
     }
 
     private void NavigateToMenu()
     {
-        NavigationService.GoToNormalNumbersMenu();
+        NavigationService.Goto(Routes.NormalNumbersMenu);
     }
 }

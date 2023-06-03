@@ -47,5 +47,26 @@ namespace JapaneseNumberTrainer.Tests
             var result = _service.MonthToRomaji(month);
             Assert.That(result, Is.EqualTo(expected));
         }
+
+        [TestCase(1, ExpectedResult = "tsuitachi")]
+        [TestCase(5, ExpectedResult = "itsuka")]
+        [TestCase(10, ExpectedResult = "tooka")]
+        [TestCase(15, ExpectedResult = "juugonichi")]
+        [TestCase(20, ExpectedResult = "hatsuka")]
+        [TestCase(25, ExpectedResult = "nijuugonichi")]
+        [TestCase(30, ExpectedResult = "sanjuunichi")]
+        [TestCase(31, ExpectedResult = "sanjuuichinichi")]
+        public string DayToRomaji_ValidDays_ReturnsCorrectRomaji(int day)
+        {
+            return _service.DayToRomaji(day);
+        }
+
+        [TestCase(0)]
+        [TestCase(32)]
+        [TestCase(-1)]
+        public void DayToRomaji_InvalidDays_ThrowsArgumentOutOfRangeException(int day)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => _service.DayToRomaji(day));
+        }
     }
 }

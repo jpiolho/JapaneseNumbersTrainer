@@ -1,0 +1,44 @@
+﻿@attribute [Route(Routes.DatesDays)]
+@inject NavigationService NavigationService
+@inject JapaneseDateService JapaneseService
+@inject OptionsService OptionsService
+@layout EmptyLayout
+
+@if (Day is null)
+    return;
+
+<RevealGame Prompt="@(Day.ToString())"
+            Answer="@Romaji"
+            @bind-Reveal="@_showRomaji"
+            Next="NavigateToRandomDay"
+            Exit="NavigateToMenu" />
+
+@code {
+    [Parameter, SupplyParameterFromQuery] public int? Day { get; set; }
+
+    private string? Romaji => Day.HasValue ? JapaneseService.DayToRomaji(Day.Value) : null;
+
+    private bool _showRomaji;
+
+    protected override Task OnInitializedAsync()
+    {
+        if (Day is null)
+            NavigateToRandomDay();
+
+        return Task.CompletedTask;
+    }
+
+    private void NavigateToRandomDay()
+    {
+        _showRomaji = false;
+
+        var day = Utils.GetNewRandomInt(1, 32, Day);
+
+        NavigationService.ChangeQueryString($"{nameof(Day)}={day}");
+    }
+
+    private void NavigateToMenu()
+    {
+        NavigationService.Goto(Routes.DatesMenu);
+    }
+}

@@ -1,4 +1,6 @@
-﻿namespace JapaneseNumbersTrainer.Base;
+﻿using System;
+
+namespace JapaneseNumbersTrainer.Base;
 
 public static class Utils
 {
@@ -13,5 +15,17 @@ public static class Utils
         while (previous != null && EqualityComparer<TItem>.Default.Equals(value, previous.Value));
 
         return value;
+    }
+
+    public static int GetNewRandomInt(int minInclusive,int maxExclusive, int? previous)
+    {
+        int newRandomInt;
+
+        do
+        {
+            newRandomInt = Random.Shared.Next(minInclusive, maxExclusive);
+        } while (previous.HasValue && newRandomInt == previous.Value);
+
+        return newRandomInt;
     }
 }

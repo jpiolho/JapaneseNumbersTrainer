@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@attribute [Route(Routes.MainMenu)]
 @inject NavigationService NavigationService
 
 <PageTitle>Index</PageTitle>
@@ -9,9 +9,9 @@
         <h3>What do you want to do today?</h3>
 
         <MenuButtonList>
-            <MenuButton Text="Normal numbers" Click="NavigationService.GoToNormalNumbersMenu"
-                        HasOptions="true" OptionsClick="NavigationService.GoToNormalNumbersOptions" />
-            <MenuButton Text="Dates" Click="NavigationService.GoToDatesMenu" />
+            <MenuButton Text="Normal numbers" Click="() => NavigationService.Goto(Routes.NormalNumbersMenu)"
+                        HasOptions="true" OptionsClick="() => NavigationService.Goto(Routes.NormalNumbersOptions)" />
+            <MenuButton Text="Dates" Click="() => NavigationService.Goto(Routes.DatesMenu)" />
             <MenuButton Text="Clock" Disabled="true" />
             <MenuButton Text="Age" Disabled="true" />
         </MenuButtonList>

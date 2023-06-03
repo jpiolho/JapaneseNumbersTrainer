@@ -1,4 +1,4 @@
-﻿@page "/dates/months"
+﻿@attribute [Route(Routes.DatesMonths)]
 @inject NavigationService NavigationService
 @inject JapaneseDateService JapaneseService
 @inject OptionsService OptionsService
@@ -41,6 +41,6 @@
 
     private void NavigateToMenu()
     {
-        NavigationService.GoToDatesMenu();
+        NavigationService.Goto(Routes.DatesMenu);
     }
 }

@@ -1,4 +1,4 @@
-﻿@page "/normal-numbers/translate"
+﻿@attribute [Route(Routes.NormalNumbersTranslate)]
 @inject NavigationService NavigationService
 @inject JapaneseNumbersService JapaneseService
 @inject OptionsService OptionsService
@@ -21,7 +21,7 @@
 
     <Footer>
         <MenuButtonList>
-            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigationService.GoToNormalNumbersMenu" />
+            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="() => NavigationService.Goto(Routes.NormalNumbersMenu)" />
         </MenuButtonList>
     </Footer>
 </GameLayout>

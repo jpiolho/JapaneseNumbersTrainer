@@ -1,4 +1,4 @@
-﻿@page "/normal-numbers"
+﻿@attribute [Route(Routes.NormalNumbersMenu)]
 @inject NavigationService NavigationService
 
 <PageTitle>Normal Numbers</PageTitle>
@@ -9,11 +9,11 @@
         <h3>Choose a exercise type</h3>
 
         <MenuButtonList>
-            <MenuButton Text="Number to Japanese" Click="NavigationService.GoToNormalNumbersGameModeNumberToJapanese" />
-            <MenuButton Text="Text to number" Click="NavigationService.GoToNormalNumbersGameModeTextToNumber" Disabled="true" />
-            <MenuButton Text="Speech to number" Click="NavigationService.GoToNormalNumbersGameModeSpeechToNumber" Disabled="true" />
-            <MenuButton Text="Translate" Icon="tools" ButtonStyle="MenuButton.Style.Info" Click="NavigationService.GoToNormalNumbersTranslate" />
-            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="NavigationService.GoToMainMenu" />
+            <MenuButton Text="Number to Japanese" Click="() => NavigationService.Goto(Routes.NormalNumbersNumberToJapanese)" />
+            <MenuButton Text="Text to number" Disabled="true" />
+            <MenuButton Text="Speech to number" Disabled="true" />
+            <MenuButton Text="Translate" Icon="tools" ButtonStyle="MenuButton.Style.Info" Click="() => NavigationService.Goto(Routes.NormalNumbersTranslate)" />
+            <MenuButton Text="Back" ButtonStyle="MenuButton.Style.Secondary" Click="() => NavigationService.Goto(Routes.MainMenu)" />
         </MenuButtonList>
     </div>
 </div>
